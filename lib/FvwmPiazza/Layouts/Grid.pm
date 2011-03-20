@@ -47,6 +47,8 @@ sub init {
 Apply the requested tiling layout.
 
 =cut
+
+# TA:  FIXME - needs generalising in base class.
 sub apply_layout {
     my $self = shift;
     my %args = (
@@ -113,6 +115,7 @@ sub apply_layout {
     my $num_rows = int($max_win / $num_cols);
 
     # Calculate the width and height ratios
+    # TA:  Resize increments?
     my @width_ratios =
 	$self->calculate_ratios(num_sets=>$num_cols, ratios=>$width_ratio);
     my @height_ratios =

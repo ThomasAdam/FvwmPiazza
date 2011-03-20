@@ -41,6 +41,7 @@ sub name {
     if (!$self->{NAME})
     {
 	my $name = ref $self;
+    # TA:  UNIVERSAL::ISA!
 	$name =~ s/FvwmPiazza::Layouts:://;
 	$self->{NAME} = $name;
     }

@@ -1,6 +1,8 @@
 package FvwmPiazza::Tiler;
 use strict;
 
+# TA:  use warnings;???
+
 =head1 NAME
 
 FvwmPiazza::Tiler - Fvwm module for tiling windows.
@@ -80,6 +82,9 @@ sub init {
 
     $self->{configTracker} = $self->track('ModuleConfig',
 		DefaultConfig => {
+
+        # TA:  FVWM sends this indirectly as part of its module
+        #      communication!
 		Struts => '0 0 0 0',
 		Include => '',
 		Exclude => '',
@@ -110,6 +115,7 @@ sub init {
     {
 	if ($key =~ /Layout(\d+)-(\d+)-(\d+)/) # By Page
 	{
+        # TA:  Positive-integers only.
 	    my $desk_n = $1;
 	    my $pagex_n = $2;
 	    my $pagey_n = $3;
@@ -292,6 +298,7 @@ sub observe_window_addition {
     my $wid = shift;
     my $old_data = shift;
 
+    # TA:  See comments in &check_interest()
     if (!$self->check_interest(window=>$wid))
     {
        $self->debug("Not Interested in window $wid");
@@ -623,7 +630,11 @@ sub apply_tiling {
     #
     if (($layout eq 'None'))
     {
-	$self
+
+    # TA:  Maximizable?  c.f. "Maximized".
+    #
+    # All (..., Maximized)
+    $self
 	->postponeSend("All (CurrentPage, Maximizable) Maximize False");
 
 	delete $self->{desks}->{$desk}->{$pagex}->{$pagey};
@@ -860,11 +871,14 @@ sub check_interest {
     }
     my $wid = $args{window};
     my $window;
+
+    # TA:  FIXME - UNIVERSAL::ISA!
     if (ref $args{window} eq "FVWM::Window")
     {
 	$window = $args{window};
 	$wid = $window->{id};
     }
+    # TA:  FIXME - UNIVERSAL::ISA!
     elsif (ref $args{window} eq "FvwmPiazza::GroupWindow")
     {
 	$wid = $window->{ID};
@@ -873,6 +887,12 @@ sub check_interest {
     my $include = $self->{configTracker}->data('Include');
     my $exclude = $self->{configTracker}->data('Exclude');
     my @names = ();
+    # TA:  This is ugly -- for every window we check it against xprop?  Why?
+    #      Better is to just trust FVWM as its EWMH-handling will ensure
+    #      these tests are redundant in the first instance with the correct
+    #      EWMH* styles anyway.
+
+    # FIXME - package-global bareword FH == bad.
     open (XPROP, "xprop -id $wid |") or die "Could not start xprop";
     while (<XPROP>)
     {
@@ -880,8 +900,11 @@ sub check_interest {
 	    or /_NET_WM_STATE_SKIP_PAGER/
 	    or /_NET_WM_STATE_SKIP_TASKBAR/
 	    or /_NET_WM_WINDOW_TYPE_DIALOG/
+
+        # Impossible.
 	    or /window state: Withdrawn/
-	    or /_NET_WM_STATE_STICKY/
+
+        or /_NET_WM_STATE_STICKY/
 	    or /_NET_WM_WINDOW_TYPE_DIALOG/
 	    or /WM_TRANSIENT_FOR/
 	    or /_NET_WM_WINDOW_TYPE_SPLASH/

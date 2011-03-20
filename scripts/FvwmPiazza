@@ -143,7 +143,7 @@ tell the module what they are.
     # =================================================================
     # FvwmPiazza
     # =================================================================
-    All (FvwmPiazza) Close
+    KillModule FvwmPiazza
     DestroyModuleConfig FvwmPiazza: *
 
     *FvwmPiazza: Struts 0 70 24 0
@@ -158,7 +158,7 @@ tell the module what they are.
     *FvwmPiazza: Layout7 Tall 3
     *FvwmPiazza: Layout8 Full
 
-    Module FvwmPiazza
+    AddToFunc StartFunction I Module FvwmPiazza
 
     # Hotkeys
     Key n		A	3	SendToModule FvwmPiazza "None"
@@ -185,8 +185,8 @@ tell the module what they are.
     # =================================================================
     # FvwmPiazza
     # =================================================================
-    All (FvwmPiazza) Close
-    DestroyModuleConfig FvwmPiazza: *
+    KillModule FvwmPiazza 
+    DestroyModuleConfig FvwmPiazza:*
 
     *FvwmPiazza: Struts 0 112 24 0
     *FvwmPiazza: Exclude (Gweled|gnome-mastermind|PipeWalker|feh|pho|Lurk)
@@ -199,7 +199,7 @@ tell the module what they are.
     *FvwmPiazza: Layout6 Full
     *FvwmPiazza: Layout7 None
 
-    Module FvwmPiazza
+    AddToFunc StartFunction I Module FvwmPiazza
 
     # Hotkeys
     Key n		A	3	SendToModule FvwmPiazza "None"
@@ -221,6 +221,9 @@ tell the module what they are.
     # Functions
 
     # Fake multi-keys by defining menus
+    #
+    # Or see:  http://fvwm.org/documentation/faq/#3.27
+    # TA:  (Using "FP*" here is bad, c.f. FocusPolicy styles.)
     DestroyMenu FPMultiColumnMenu
     AddToMenu FPMultiColumnMenu
     + "&2 Columns" SendToModule FvwmPiazza Columns 2
@@ -281,6 +284,8 @@ Since this module is only used by Fvwm, it makes equal sense to install it in yo
     cp scripts/FvwmPiazza $HOME/.fvwm/modules
     mkdir $HOME/.fvwm/perllib
     cp -a lib/FvwmPiazza $HOME/.fvwm/perllib
+
+This will mean an update of one's ModulePath, which is not advisable.
 
 =head1 BUGS
 

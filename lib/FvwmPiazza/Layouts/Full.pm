@@ -48,6 +48,8 @@ sub init {
 Apply the requested tiling layout.
 
 =cut
+
+# TA:  FIXME - needs generalising.
 sub apply_layout {
     my $self = shift;
     my %args = (
@@ -109,6 +111,7 @@ sub apply_layout {
     for (my $grp=0; $grp < $area->num_groups(); $grp++)
     {
 	my $group = $area->group($grp);
+    # TA:  FIXME - Xinerama???
 	$group->arrange_group(module=>$args{tiler},
 	    x=>$xpos,
 	    y=>$ypos,

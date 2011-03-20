@@ -25,6 +25,7 @@ use FvwmPiazza::Page;
 use FvwmPiazza::Group;
 use FvwmPiazza::GroupWindow;
 
+# TA:  FIXME - apply_layout() should be generalised here.
 use base qw( FvwmPiazza::Layouts );
 
 our $ERROR;
